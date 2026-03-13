@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.vomiter.zombieseatanimals.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "ZombieMixin",
+    "LivingEntityMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "refmap": "zombieseatanimals.mixins.refmap.json"
+}
