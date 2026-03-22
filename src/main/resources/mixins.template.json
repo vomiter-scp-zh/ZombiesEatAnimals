@@ -5,7 +5,9 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "ZombieMixin",
-    "LivingEntityMixin"
+    "LivingEntityMixin",
+    "MeleeAttackGoal_MountedZombieMixin",
+    "Zombie_MountedHeadClampMixin"
   ],
   "client": [
   ],

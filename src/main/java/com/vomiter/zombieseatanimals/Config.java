@@ -13,6 +13,12 @@ public final class Config {
     private static final ForgeConfigSpec.BooleanValue ALWAYS_HUNTING_VALUE;
     private static final ForgeConfigSpec.BooleanValue BERSERKER_HUNTING_VALUE;
 
+    private static final ForgeConfigSpec.BooleanValue HUNT_AND_ZOMBIFY_HORSE_VALUE;
+    private static final ForgeConfigSpec.BooleanValue HUNT_AND_ZOMBIFY_TAMED_HORSE_VALUE;
+    private static final ForgeConfigSpec.BooleanValue FIND_NEARBY_ZOMBIE_HORSE_AND_RIDE_VALUE;
+    private static final ForgeConfigSpec.BooleanValue HUNT_BABIES_VALUE;
+    private static final ForgeConfigSpec.IntValue HUNT_START_ON_VALUE;
+
     private static final ForgeConfigSpec.IntValue HUNT_COOLDOWN_TICKS_VALUE;
     private static final ForgeConfigSpec.IntValue HUNT_CAP_FOR_A_DAY_VALUE;
     private static final ForgeConfigSpec.IntValue HUNT_CAP_FOR_A_DAY_TOTAL_VALUE;
@@ -28,6 +34,11 @@ public final class Config {
     // -------- Cached primitives --------
     public static boolean ALWAYS_HUNTING = false;
     public static boolean BERSERKER_HUNTING = false;
+    public static boolean HUNT_AND_ZOMBIFY_HORSE = false;
+    public static boolean HUNT_AND_ZOMBIFY_TAMED_HORSE = false;
+    public static boolean FIND_NEARBY_ZOMBIE_HORSE_AND_RIDE = false;
+    public static boolean HUNT_BABIES = false;
+    public static int HUNT_START_ON = 0;
 
     public static int HUNT_COOLDOWN_TICKS = 20 * 60; // 1 minute
     public static int HUNT_CAP_FOR_A_DAY = 10;
@@ -63,6 +74,39 @@ public final class Config {
         BUILDER.pop();
 
         BUILDER.push("hunting");
+
+        HUNT_AND_ZOMBIFY_HORSE_VALUE = BUILDER
+                .comment(
+                        "If true, a horse killed by a zombie may turn into a zombie horse."
+                )
+                .define("huntAndZombifyHorse", false);
+
+        HUNT_AND_ZOMBIFY_TAMED_HORSE_VALUE = BUILDER
+                .comment(
+                        "If true, tamed horses may also be zombified when killed by zombies.",
+                        "Only used when huntAndZombifyHorse is true."
+                )
+                .define("huntAndZombifyTamedHorse", false);
+
+        FIND_NEARBY_ZOMBIE_HORSE_AND_RIDE_VALUE = BUILDER
+                .comment(
+                        "If true, zombies may search for a nearby zombie horse and ride it."
+                )
+                .define("findNearbyZombieHorseAndRide", false);
+
+        HUNT_BABIES_VALUE = BUILDER
+                .comment(
+                        "If true, zombies may hunt baby animals too."
+                )
+                .define("huntBabies", false);
+
+        HUNT_START_ON_VALUE = BUILDER
+                .comment(
+                        "The in-game day number when zombies start hunting animals.",
+                        "0 = hunting allowed from the beginning.",
+                        "1 = starts on day 1, 2 = starts on day 2, and so on."
+                )
+                .defineInRange("huntStartOn", 0, 0, Integer.MAX_VALUE);
 
         HUNT_COOLDOWN_TICKS_VALUE = BUILDER
                 .comment(
@@ -154,9 +198,16 @@ public final class Config {
         ALWAYS_HUNTING = ALWAYS_HUNTING_VALUE.get();
         BERSERKER_HUNTING = BERSERKER_HUNTING_VALUE.get();
 
+        HUNT_AND_ZOMBIFY_HORSE = HUNT_AND_ZOMBIFY_HORSE_VALUE.get();
+        HUNT_AND_ZOMBIFY_TAMED_HORSE = HUNT_AND_ZOMBIFY_TAMED_HORSE_VALUE.get();
+        FIND_NEARBY_ZOMBIE_HORSE_AND_RIDE = FIND_NEARBY_ZOMBIE_HORSE_AND_RIDE_VALUE.get();
+        HUNT_BABIES = HUNT_BABIES_VALUE.get();
+        HUNT_START_ON = HUNT_START_ON_VALUE.get();
+
         HUNT_COOLDOWN_TICKS = HUNT_COOLDOWN_TICKS_VALUE.get();
         HUNT_CAP_FOR_A_DAY = HUNT_CAP_FOR_A_DAY_VALUE.get();
         HUNT_CAP_FOR_A_DAY_TOTAL = HUNT_CAP_FOR_A_DAY_TOTAL_VALUE.get();
+        HUNT_FOLLOW_DISTANCE_FACTOR = HUNT_FOLLOW_DISTANCE_FACTOR_VALUE.get();
 
         ENABLE_EAT_FOOD_ITEMS = ENABLE_EAT_FOOD_ITEMS_VALUE.get();
         MAX_HEALTH_BOOST_CAP = MAX_HEALTH_BOOST_CAP_VALUE.get();
@@ -164,6 +215,5 @@ public final class Config {
         EAT_COOLDOWN_TICKS = EAT_COOLDOWN_TICKS_VALUE.get();
         RECOVERY_PER_NUTRITION = RECOVERY_PER_NUTRITION_VALUE.get();
         ROTTEN_FLESH_GIVE_RESISTANCE = ROTTEN_FLESH_GIVE_RESISTANCE_VALUE.get();
-        HUNT_FOLLOW_DISTANCE_FACTOR = HUNT_FOLLOW_DISTANCE_FACTOR_VALUE.get();
     }
 }

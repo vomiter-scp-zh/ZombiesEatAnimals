@@ -47,22 +47,21 @@ apply from: 'gradle/optional-dep.gradle'
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     annotationProcessor("org.spongepowered:mixin:${mixin_version}:processor")
+
+    runtimeOnly fg.deobf("curse.maven:terrafirmacraft-302973:6835820")
+    runtimeOnly fg.deobf("curse.maven:patchouli-306770:4636277")
+
 }
-def devRuntimeProject(String path) {
-    evaluationDependsOn(path)
-    dependencies {
-        runtimeOnly files(
-                project(path)
-                        .tasks.named("devJar")
-                        .flatMap { it.archiveFile }
-        )
-        compileOnly project(path)
-    }
-    tasks.matching { it.name in ["runClient", "runServer", "runGameTestServer"] }.configureEach {
-        dependsOn("${path}:devJar")
+repositories {
+    flatDir {
+        dir project(":neurolib").layout.buildDirectory.dir("libs").get().asFile
     }
 }
-devRuntimeProject(":neurolib")
+
+dependencies {
+    compileOnly fg.deobf("local:neurolib:0.3.0")
+    runtimeOnly fg.deobf("local:neurolib:0.3.0")
+}
 
 //devRuntime.project(":common", true)
 

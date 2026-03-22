@@ -2,6 +2,7 @@ package com.vomiter.zombieseatanimals;
 
 import com.mojang.logging.LogUtils;
 import com.vomiter.zombieseatanimals.data.DataGenerator;
+import com.vomiter.zombieseatanimals.event.HorseDeathEventHandler;
 import com.vomiter.zombieseatanimals.event.ReloadHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -23,13 +24,16 @@ public class ZombiesEatAnimals
         IEventBus modBus = context.getModEventBus();
         modBus.addListener(this::commonSetup);
         modBus.addListener(DataGenerator::gatherData);
-        final IEventBus bus = MinecraftForge.EVENT_BUS;
-        bus.addListener(ReloadHooks::onAddReloadListener);
         context.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
         if(FMLEnvironment.dist.isClient()){
         }
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
+        event.enqueueWork(() -> {
+            final IEventBus bus = MinecraftForge.EVENT_BUS;
+            bus.addListener(ReloadHooks::onAddReloadListener);
+            bus.addListener(HorseDeathEventHandler::onLivingDeath);
+        });
     }
 }

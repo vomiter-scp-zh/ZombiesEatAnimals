@@ -1,9 +1,11 @@
 package com.vomiter.zombieseatanimals.mixin;
 
+import com.vomiter.zombieseatanimals.Config;
 import com.vomiter.zombieseatanimals.entity.IZombieEatAnimal;
 import com.vomiter.zombieseatanimals.entity.ZombieBasicHelpers;
 import com.vomiter.zombieseatanimals.entity.ai.ZombieEatMeatAndRegenGoal;
 import com.vomiter.zombieseatanimals.entity.ai.ZombieHuntAnimalsGoal;
+import com.vomiter.zombieseatanimals.entity.ai.ZombieMountNearbyZombieHorseGoal;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Zombie;
@@ -28,16 +30,17 @@ public abstract class ZombieMixin extends Monster implements IZombieEatAnimal {
     ZombieEatMeatAndRegenGoal zea$eatMeatGoal;
 
     @Inject(method = "addBehaviourGoals", at = @At("HEAD"))
-    private void addGoals(CallbackInfo ci){
+    private void zea$addGoals(CallbackInfo ci){
         Zombie zombie = (Zombie)(Object)this;
         zea$eatMeatGoal = new ZombieEatMeatAndRegenGoal(zombie, 1.0, 20, 32);
         zea$huntAnimalGoal = new ZombieHuntAnimalsGoal(zombie);
         targetSelector.addGoal(3, zea$huntAnimalGoal);
-        goalSelector.addGoal(3, zea$eatMeatGoal);
+        goalSelector.addGoal(4, zea$eatMeatGoal);
+        if(Config.FIND_NEARBY_ZOMBIE_HORSE_AND_RIDE) goalSelector.addGoal(4, new ZombieMountNearbyZombieHorseGoal(zombie, 1, 32, 3));
     }
 
     @Inject(method = "tick", at = @At("RETURN"))
-    private void cooldown(CallbackInfo ci){
+    private void zea$tick(CallbackInfo ci){
         Zombie zombie = (Zombie)(Object)this;
         if(ZombieBasicHelpers.zombiesToUpgrade.remove(zombie)){
             zombie.setCanBreakDoors(supportsBreakDoorGoal());

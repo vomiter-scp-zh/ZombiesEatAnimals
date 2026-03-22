@@ -1,7 +1,6 @@
 package com.vomiter.zombieseatanimals.entity.ai;
 
-import com.vomiter.neurolib.common.entity.eat.MobEatDroppedFoodGoal;
-import com.vomiter.neurolib.common.entity.eat.MobEatingFx;
+import com.vomiter.neurolib.common.entity.gather.eat.MobEatDroppedItemGoal;
 import com.vomiter.zombieseatanimals.Config;
 import com.vomiter.zombieseatanimals.entity.ZombieBasicHelpers;
 import net.minecraft.sounds.SoundEvents;
@@ -12,7 +11,7 @@ import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
-public class ZombieEatMeatAndRegenGoal extends MobEatDroppedFoodGoal<Zombie> {
+public class ZombieEatMeatAndRegenGoal extends MobEatDroppedItemGoal<Zombie> {
 
     private static final int FAIL_TTL_TICKS = 600;
     private static final int STUCK_CHECK_INTERVAL_TICKS = 10;
@@ -48,25 +47,29 @@ public class ZombieEatMeatAndRegenGoal extends MobEatDroppedFoodGoal<Zombie> {
     }
 
     @Override
-    protected boolean canStartEating() {
+    protected boolean canStartAction() {
         return ZombieBasicHelpers.isNotMaxed(mob);
     }
 
     @Override
-    protected boolean canContinueEating() {
+    protected boolean canContinueAction() {
         return ZombieBasicHelpers.isNotMaxed(mob);
     }
 
     @Override
     protected boolean isEdible(ItemStack stack, ItemEntity entity) {
-        if (!stack.is(ZombieBasicHelpers.ZOMBIE_FOOD)) return false;
+        if (!stack.is(ZombieBasicHelpers.ZOMBIE_FOOD)) {
+            return false;
+        }
         return stack.getItem().getFoodProperties(stack, mob) != null;
     }
 
     @Override
     protected void onAteFood(ItemStack bite, ItemEntity source) {
-        var fp = bite.getItem().getFoodProperties(bite, mob);
-        int recovery = (fp == null) ? 0 : fp.getNutrition() * Config.RECOVERY_PER_NUTRITION;
+        var foodProperties = bite.getItem().getFoodProperties(bite, mob);
+        int recovery = foodProperties == null
+                ? 0
+                : foodProperties.getNutrition() * Config.RECOVERY_PER_NUTRITION;
 
         if (bite.is(Items.ROTTEN_FLESH) && Config.ROTTEN_FLESH_GIVE_RESISTANCE) {
             mob.addEffect(new MobEffectInstance(
@@ -77,12 +80,12 @@ public class ZombieEatMeatAndRegenGoal extends MobEatDroppedFoodGoal<Zombie> {
         }
 
         ZombieBasicHelpers.recoverAndBoostHealth(mob, recovery);
-        MobEatingFx.playBiteSounds(mob, SoundEvents.GENERIC_EAT, 1.0F, 1.0F,
-                net.minecraft.sounds.SoundEvents.ZOMBIE_AMBIENT, 0.2F, 0.8F);
+        playDefaultEatSound();
+        mob.playSound(SoundEvents.ZOMBIE_AMBIENT, 0.2F, 0.8F);
     }
 
     @Override
-    protected int getEatCooldownTicks() {
+    protected int getActionCooldownTicks() {
         return Config.EAT_COOLDOWN_TICKS;
     }
 
@@ -91,27 +94,15 @@ public class ZombieEatMeatAndRegenGoal extends MobEatDroppedFoodGoal<Zombie> {
         mob.setTarget(null);
     }
 
-    @Override public boolean canUse() {
-        if (mob.level().isClientSide) return false;
-        if (!Config.ENABLE_EAT_FOOD_ITEMS) return false;
-        if (!ZombieBasicHelpers.isNotMaxed((Zombie) mob)) return false;
-        if (eatingFx.isEating()) return false;
-        if (nextScanTick-- > 0) return false;
-        nextScanTick = scanIntervalTicks;
-        targetFood = findNearestFoodItem();
-        return targetFood != null;
+    @Override
+    protected boolean isCloseEnoughToInteract(ItemEntity item) {
+        if(mob.getVehicle() == null) return super.isCloseEnoughToInteract(item);
+        double dx = mob.getX() - item.getX();
+        double dz = mob.getZ() - item.getZ();
+        double dy = Math.abs(mob.getVehicle().getY() - item.getY());
+
+        return dx * dx + dz * dz <= interactHorizontalRange * interactHorizontalRange
+                && dy <= interactVerticalRange;
     }
-    @Override public boolean canContinueToUse() {
-        if (mob.level().isClientSide) return false;
-        if (eatingFx.isEating()) return true;
-        if (!Config.ENABLE_EAT_FOOD_ITEMS) return false;
-        if (targetFood == null || !targetFood.isAlive()) return false;
-        if (!ZombieBasicHelpers.isNotMaxed(mob)) return false;
-        if (targetFood.getItem().isEmpty()) return false;
-        if (lossOfSightTicks >= lossOfSightMaxTicks) {
-            failCache.markFailed(targetFood, mob.level().getGameTime());
-            lossOfSightTicks = 0; return false;
-        }
-        return mob.distanceToSqr(targetFood) <= (searchRadius * searchRadius);
-    }
+
 }
