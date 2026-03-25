@@ -50,7 +50,6 @@ public class HorseDeathEventHandler {
                                 (ServerLevelAccessor) level,
                                 level.getCurrentDifficultyAt(zombieHorse.blockPosition()),
                                 MobSpawnType.CONVERSION,
-                                null,
                                 null
                         );
 
