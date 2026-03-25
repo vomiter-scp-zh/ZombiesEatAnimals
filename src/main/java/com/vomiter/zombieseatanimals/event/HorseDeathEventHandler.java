@@ -1,6 +1,5 @@
 package com.vomiter.zombieseatanimals.event;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -45,13 +44,15 @@ public class HorseDeathEventHandler {
 
                     ZombieHorse zombieHorse = horse.convertTo(EntityType.ZOMBIE_HORSE, false);
                     if (zombieHorse != null) {
+
                         zombieHorse.finalizeSpawn(
                                 (ServerLevelAccessor) level,
                                 level.getCurrentDifficultyAt(zombieHorse.blockPosition()),
                                 MobSpawnType.CONVERSION,
-                                new Zombie.ZombieGroupData(false, true),
-                                (CompoundTag)null
+                                null,
+                                null
                         );
+
                         // 再把保留資料寫回去
                         if (zombieHorse.getAttribute(Attributes.JUMP_STRENGTH) != null) {
                             zombieHorse.getAttribute(Attributes.JUMP_STRENGTH).setBaseValue(jumpStrength);
@@ -59,8 +60,6 @@ public class HorseDeathEventHandler {
                         if (zombieHorse.getAttribute(Attributes.MOVEMENT_SPEED) != null) {
                             zombieHorse.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(moveSpeed);
                         }
-
-                        zombieHorse.setHealth(Math.min(health, zombieHorse.getMaxHealth()));
 
                         if (tamed) {
                             zombieHorse.setTamed(true);
