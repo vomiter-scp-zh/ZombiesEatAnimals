@@ -49,7 +49,7 @@ public class HorseDeathEventHandler {
                                 (ServerLevelAccessor) level,
                                 level.getCurrentDifficultyAt(zombieHorse.blockPosition()),
                                 MobSpawnType.CONVERSION,
-                                new Zombie.ZombieGroupData(false, true)
+                                null
                         );
                         // 再把保留資料寫回去
                         if (zombieHorse.getAttribute(Attributes.JUMP_STRENGTH) != null) {
@@ -58,8 +58,6 @@ public class HorseDeathEventHandler {
                         if (zombieHorse.getAttribute(Attributes.MOVEMENT_SPEED) != null) {
                             zombieHorse.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(moveSpeed);
                         }
-
-                        zombieHorse.setHealth(Math.min(health, zombieHorse.getMaxHealth()));
 
                         if (tamed) {
                             zombieHorse.setTamed(true);
