@@ -3,16 +3,14 @@ package com.vomiter.zombieseatanimals.entity;
 import com.vomiter.neurolib.common.entity.loot.LootMatchSpec;
 import com.vomiter.neurolib.common.entity.loot.LootTableContainsHelper;
 import com.vomiter.zombieseatanimals.data.ZEATags;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -45,10 +43,9 @@ public final class ZombieFoodDropHelper {
         synchronized (ZombieFoodDropHelper.class) {
             if (zombieFoodSpec == null) {
                 Set<String> itemIds = Arrays.stream(Ingredient.of(ZombieBasicHelpers.ZOMBIE_FOOD).getItems())
+                        .filter(item -> item.getFoodProperties(null) != null)
                         .map(ItemStack::getItem)
-                        .filter(Item::isEdible)
-                        .map(ForgeRegistries.ITEMS::getKey)
-                        .filter(Objects::nonNull)
+                        .map(BuiltInRegistries.ITEM::getKey)
                         .map(ResourceLocation::toString)
                         .collect(Collectors.toUnmodifiableSet());
 

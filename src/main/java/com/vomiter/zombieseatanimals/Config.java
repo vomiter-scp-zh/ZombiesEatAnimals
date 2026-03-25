@@ -1,35 +1,35 @@
 package com.vomiter.zombieseatanimals;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.event.config.ModConfigEvent;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
-@Mod.EventBusSubscriber(modid = ZombiesEatAnimals.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = ZombiesEatAnimals.MOD_ID)
 public final class Config {
-    private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
+    private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
 
     // -------- Spec values --------
-    private static final ForgeConfigSpec.BooleanValue ALWAYS_HUNTING_VALUE;
-    private static final ForgeConfigSpec.BooleanValue BERSERKER_HUNTING_VALUE;
+    private static final ModConfigSpec.BooleanValue ALWAYS_HUNTING_VALUE;
+    private static final ModConfigSpec.BooleanValue BERSERKER_HUNTING_VALUE;
 
-    private static final ForgeConfigSpec.BooleanValue HUNT_AND_ZOMBIFY_HORSE_VALUE;
-    private static final ForgeConfigSpec.BooleanValue HUNT_AND_ZOMBIFY_TAMED_HORSE_VALUE;
-    private static final ForgeConfigSpec.BooleanValue FIND_NEARBY_ZOMBIE_HORSE_AND_RIDE_VALUE;
-    private static final ForgeConfigSpec.BooleanValue HUNT_BABIES_VALUE;
-    private static final ForgeConfigSpec.IntValue HUNT_START_ON_VALUE;
+    private static final ModConfigSpec.BooleanValue HUNT_AND_ZOMBIFY_HORSE_VALUE;
+    private static final ModConfigSpec.BooleanValue HUNT_AND_ZOMBIFY_TAMED_HORSE_VALUE;
+    private static final ModConfigSpec.BooleanValue FIND_NEARBY_ZOMBIE_HORSE_AND_RIDE_VALUE;
+    private static final ModConfigSpec.BooleanValue HUNT_BABIES_VALUE;
+    private static final ModConfigSpec.IntValue HUNT_START_ON_VALUE;
 
-    private static final ForgeConfigSpec.IntValue HUNT_COOLDOWN_TICKS_VALUE;
-    private static final ForgeConfigSpec.IntValue HUNT_CAP_FOR_A_DAY_VALUE;
-    private static final ForgeConfigSpec.IntValue HUNT_CAP_FOR_A_DAY_TOTAL_VALUE;
-    private static final ForgeConfigSpec.DoubleValue HUNT_FOLLOW_DISTANCE_FACTOR_VALUE;
+    private static final ModConfigSpec.IntValue HUNT_COOLDOWN_TICKS_VALUE;
+    private static final ModConfigSpec.IntValue HUNT_CAP_FOR_A_DAY_VALUE;
+    private static final ModConfigSpec.IntValue HUNT_CAP_FOR_A_DAY_TOTAL_VALUE;
+    private static final ModConfigSpec.DoubleValue HUNT_FOLLOW_DISTANCE_FACTOR_VALUE;
 
-    private static final ForgeConfigSpec.BooleanValue ENABLE_EAT_FOOD_ITEMS_VALUE;
-    private static final ForgeConfigSpec.IntValue MAX_HEALTH_BOOST_CAP_VALUE;
-    private static final ForgeConfigSpec.IntValue MAX_HEALTH_BOOST_CAP_HARD_MODE_ADDITION_VALUE;
-    private static final ForgeConfigSpec.IntValue EAT_COOLDOWN_TICKS_VALUE;
-    private static final ForgeConfigSpec.IntValue RECOVERY_PER_NUTRITION_VALUE;
-    private static final ForgeConfigSpec.BooleanValue ROTTEN_FLESH_GIVE_RESISTANCE_VALUE;
+    private static final ModConfigSpec.BooleanValue ENABLE_EAT_FOOD_ITEMS_VALUE;
+    private static final ModConfigSpec.IntValue MAX_HEALTH_BOOST_CAP_VALUE;
+    private static final ModConfigSpec.IntValue MAX_HEALTH_BOOST_CAP_HARD_MODE_ADDITION_VALUE;
+    private static final ModConfigSpec.IntValue EAT_COOLDOWN_TICKS_VALUE;
+    private static final ModConfigSpec.IntValue RECOVERY_PER_NUTRITION_VALUE;
+    private static final ModConfigSpec.BooleanValue ROTTEN_FLESH_GIVE_RESISTANCE_VALUE;
 
     // -------- Cached primitives --------
     public static boolean ALWAYS_HUNTING = false;
@@ -52,7 +52,7 @@ public final class Config {
     public static int RECOVERY_PER_NUTRITION = 1;
     public static boolean ROTTEN_FLESH_GIVE_RESISTANCE = true;
 
-    public static final ForgeConfigSpec SPEC;
+    public static final ModConfigSpec SPEC;
 
     static {
         BUILDER.push("general");

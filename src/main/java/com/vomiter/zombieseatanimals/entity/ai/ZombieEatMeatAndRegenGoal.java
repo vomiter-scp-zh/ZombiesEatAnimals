@@ -69,7 +69,7 @@ public class ZombieEatMeatAndRegenGoal extends MobEatDroppedItemGoal<Zombie> {
         var foodProperties = bite.getItem().getFoodProperties(bite, mob);
         int recovery = foodProperties == null
                 ? 0
-                : foodProperties.getNutrition() * Config.RECOVERY_PER_NUTRITION;
+                : foodProperties.nutrition() * Config.RECOVERY_PER_NUTRITION;
 
         if (bite.is(Items.ROTTEN_FLESH) && Config.ROTTEN_FLESH_GIVE_RESISTANCE) {
             mob.addEffect(new MobEffectInstance(
@@ -103,6 +103,11 @@ public class ZombieEatMeatAndRegenGoal extends MobEatDroppedItemGoal<Zombie> {
 
         return dx * dx + dz * dz <= interactHorizontalRange * interactHorizontalRange
                 && dy <= interactVerticalRange;
+    }
+
+    @Override
+    public boolean canUse(){
+        return super.canUse();
     }
 
 }
