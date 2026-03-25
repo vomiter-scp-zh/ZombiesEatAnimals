@@ -9,10 +9,11 @@ import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.entity.animal.horse.ZombieHorse;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.EventHooks;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 
 public class HorseDeathEventHandler {
     public static void onLivingDeath(LivingDeathEvent event){
@@ -23,7 +24,7 @@ public class HorseDeathEventHandler {
             var attacker = event.getSource().getEntity();
             if(attacker instanceof Zombie){
                 if ((level.getDifficulty() == Difficulty.NORMAL || level.getDifficulty() == Difficulty.HARD)
-                        && ForgeEventFactory.canLivingConvert(entity, EntityType.ZOMBIE_HORSE, (timer) -> {})) {
+                        && EventHooks.canLivingConvert(entity, EntityType.ZOMBIE_HORSE, (timer) -> {})) {
                     if (level.getDifficulty() != Difficulty.HARD && level.random.nextBoolean()) {
                         return;
                     }
@@ -40,7 +41,7 @@ public class HorseDeathEventHandler {
                     var customName = horse.getCustomName();
                     boolean customNameVisible = horse.isCustomNameVisible();
                     boolean baby = horse.isBaby();
-                    ItemStack horseArmor = horse.getArmor();
+                    ItemStack horseArmor = horse.getBodyArmorItem();
 
                     ZombieHorse zombieHorse = horse.convertTo(EntityType.ZOMBIE_HORSE, false);
                     if (zombieHorse != null) {
@@ -76,11 +77,11 @@ public class HorseDeathEventHandler {
                         }
 
                         if (saddled) {
-                            zombieHorse.equipSaddle(null);
+                            zombieHorse.equipSaddle(new ItemStack(Items.SADDLE),null);
                         }
 
                         zombieHorse.spawnAtLocation(horseArmor);
-                        ForgeEventFactory.onLivingConvert(horse, zombieHorse);
+                        EventHooks.onLivingConvert(horse, zombieHorse);
                         if (!attacker.isSilent()) {
                             level.levelEvent(null, 1026, attacker.blockPosition(), 0);
                         }

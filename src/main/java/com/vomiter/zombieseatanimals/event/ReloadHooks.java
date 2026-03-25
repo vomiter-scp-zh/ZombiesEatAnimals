@@ -1,7 +1,7 @@
 package com.vomiter.zombieseatanimals.event;
 
 import com.vomiter.zombieseatanimals.entity.ZombieFoodDropHelper;
-import net.minecraftforge.event.AddReloadListenerEvent;
+import net.neoforged.neoforge.event.AddReloadListenerEvent;
 
 public final class ReloadHooks {
     public static void onAddReloadListener(AddReloadListenerEvent event) {

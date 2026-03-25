@@ -84,4 +84,10 @@ public class ZombieHuntAnimalsGoal extends AbstractCappedHuntGoal<Zombie, Animal
     protected double getFollowDistanceFactor() {
         return Config.HUNT_FOLLOW_DISTANCE_FACTOR;
     }
+
+    @Override
+    public boolean canUse(){
+        return super.canUse();
+    }
+
 }

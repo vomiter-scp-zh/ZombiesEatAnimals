@@ -6,7 +6,6 @@
   "mixins": [
     "ZombieMixin",
     "LivingEntityMixin",
-    "MeleeAttackGoal_MountedZombieMixin",
     "Zombie_MountedHeadClampMixin"
   ],
   "client": [
