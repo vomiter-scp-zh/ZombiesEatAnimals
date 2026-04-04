@@ -3,11 +3,12 @@ package com.vomiter.zombieseatanimals.entity.ai;
 import com.vomiter.neurolib.common.entity.gather.eat.MobEatDroppedItemGoal;
 import com.vomiter.zombieseatanimals.Config;
 import com.vomiter.zombieseatanimals.entity.ZombieBasicHelpers;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
@@ -61,19 +62,19 @@ public class ZombieEatMeatAndRegenGoal extends MobEatDroppedItemGoal<Zombie> {
         if (!stack.is(ZombieBasicHelpers.ZOMBIE_FOOD)) {
             return false;
         }
-        return stack.getItem().getFoodProperties(stack, mob) != null;
+        return stack.get(DataComponents.FOOD) != null;
     }
 
     @Override
     protected void onAteFood(ItemStack bite, ItemEntity source) {
-        var foodProperties = bite.getItem().getFoodProperties(bite, mob);
+        var foodProperties = bite.get(DataComponents.FOOD);
         int recovery = foodProperties == null
                 ? 0
                 : foodProperties.nutrition() * Config.RECOVERY_PER_NUTRITION;
 
         if (bite.is(Items.ROTTEN_FLESH) && Config.ROTTEN_FLESH_GIVE_RESISTANCE) {
             mob.addEffect(new MobEffectInstance(
-                    MobEffects.DAMAGE_RESISTANCE,
+                    MobEffects.RESISTANCE,
                     20 * 30,
                     mob.getRandom().nextInt(3)
             ));

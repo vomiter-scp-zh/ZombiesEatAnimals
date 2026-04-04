@@ -3,13 +3,13 @@ package com.vomiter.zombieseatanimals.entity;
 import com.vomiter.zombieseatanimals.Config;
 import com.vomiter.zombieseatanimals.Helpers;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.item.Item;
 
 import java.util.ArrayList;
@@ -19,9 +19,9 @@ import java.util.List;
 public class ZombieBasicHelpers {
     public static List<Zombie> zombiesToUpgrade = new ArrayList<>();
     public static TagKey<Item> ZOMBIE_FOOD = TagKey.create(BuiltInRegistries.ITEM.key(), Helpers.id("zombie_food"));
-    static ResourceLocation ZEA_HP_BOOST_RL = ResourceLocation.fromNamespaceAndPath("zombieseatanimals", "hp_boost");
-    static ResourceLocation ZEA_LEADER_REINFORCEMENT_RL = ResourceLocation.fromNamespaceAndPath("zombieseatanimals", "leader_reinforce_boost");
-    static ResourceLocation LEADER_ZOMBIE_BONUS_ID = ResourceLocation.withDefaultNamespace("leader_zombie_bonus");
+    static Identifier ZEA_HP_BOOST_RL = Identifier.fromNamespaceAndPath("zombieseatanimals", "hp_boost");
+    static Identifier ZEA_LEADER_REINFORCEMENT_RL = Identifier.fromNamespaceAndPath("zombieseatanimals", "leader_reinforce_boost");
+    static Identifier LEADER_ZOMBIE_BONUS_ID = Identifier.withDefaultNamespace("leader_zombie_bonus");
 
 
     public static int getMaxHealthBoostCap(Zombie zombie){

@@ -1,8 +1,8 @@
 package com.vomiter.zombieseatanimals.entity.ai;
 
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.monster.Zombie;
-import net.minecraft.world.entity.animal.horse.ZombieHorse;
+import net.minecraft.world.entity.monster.zombie.Zombie;
+import net.minecraft.world.entity.animal.equine.ZombieHorse;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -74,7 +74,7 @@ public class ZombieMountNearbyZombieHorseGoal extends Goal {
 
         double distSqr = zombie.distanceToSqr(targetHorse);
         if (distSqr <= mountDistanceSqr) {
-            zombie.startRiding(targetHorse, true);
+            zombie.startRiding(targetHorse);
             zombie.getNavigation().stop();
         } else {
             zombie.getNavigation().moveTo(targetHorse, speedModifier);

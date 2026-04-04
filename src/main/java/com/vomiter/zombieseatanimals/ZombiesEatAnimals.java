@@ -24,7 +24,7 @@ public class ZombiesEatAnimals
         modBus.addListener(this::commonSetup);
         modBus.addListener(DataGenerator::gatherData);
         mod.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
-        if(FMLEnvironment.dist.isClient()){
+        if(FMLEnvironment.getDist().isClient()){
         }
     }
 

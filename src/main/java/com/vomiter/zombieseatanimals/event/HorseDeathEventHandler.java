@@ -1,13 +1,12 @@
 package com.vomiter.zombieseatanimals.event;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.animal.horse.Horse;
-import net.minecraft.world.entity.animal.horse.ZombieHorse;
-import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.animal.equine.Horse;
+import net.minecraft.world.entity.animal.equine.ZombieHorse;
+import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -25,7 +24,7 @@ public class HorseDeathEventHandler {
             if(attacker instanceof Zombie){
                 if ((level.getDifficulty() == Difficulty.NORMAL || level.getDifficulty() == Difficulty.HARD)
                         && EventHooks.canLivingConvert(entity, EntityType.ZOMBIE_HORSE, (timer) -> {})) {
-                    if (level.getDifficulty() != Difficulty.HARD && level.random.nextBoolean()) {
+                    if (level.getDifficulty() != Difficulty.HARD && level.getRandom().nextBoolean()) {
                         return;
                     }
 
@@ -37,52 +36,56 @@ public class HorseDeathEventHandler {
                     boolean tamed = horse.isTamed();
                     boolean saddled = horse.isSaddled();
 
-                    var ownerUUID = horse.getOwnerUUID();
+                    var owner = horse.getOwner();
                     var customName = horse.getCustomName();
                     boolean customNameVisible = horse.isCustomNameVisible();
                     boolean baby = horse.isBaby();
                     ItemStack horseArmor = horse.getBodyArmorItem();
 
-                    ZombieHorse zombieHorse = horse.convertTo(EntityType.ZOMBIE_HORSE, false);
-                    if (zombieHorse != null) {
-                        zombieHorse.finalizeSpawn(
-                                (ServerLevelAccessor) level,
-                                level.getCurrentDifficultyAt(zombieHorse.blockPosition()),
-                                MobSpawnType.CONVERSION,
-                                null
-                        );
-                        // 再把保留資料寫回去
-                        if (zombieHorse.getAttribute(Attributes.JUMP_STRENGTH) != null) {
-                            zombieHorse.getAttribute(Attributes.JUMP_STRENGTH).setBaseValue(jumpStrength);
-                        }
-                        if (zombieHorse.getAttribute(Attributes.MOVEMENT_SPEED) != null) {
-                            zombieHorse.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(moveSpeed);
-                        }
+                    ZombieHorse zombieHorse = horse
+                            .convertTo(
+                                    EntityType.ZOMBIE_HORSE,
+                                    ConversionParams.single(horse, false, false),
+                                    newZombieHorse -> {
+                                        newZombieHorse.finalizeSpawn(
+                                                (ServerLevelAccessor) level,
+                                                ((ServerLevelAccessor) level).getCurrentDifficultyAt(newZombieHorse.blockPosition()),
+                                                EntitySpawnReason.CONVERSION,
+                                                null
+                                        );
+                                        // 再把保留資料寫回去
+                                        if (newZombieHorse.getAttribute(Attributes.JUMP_STRENGTH) != null) {
+                                            newZombieHorse.getAttribute(Attributes.JUMP_STRENGTH).setBaseValue(jumpStrength);
+                                        }
+                                        if (newZombieHorse.getAttribute(Attributes.MOVEMENT_SPEED) != null) {
+                                            newZombieHorse.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(moveSpeed);
+                                        }
 
-                        if (tamed) {
-                            zombieHorse.setTamed(true);
-                            zombieHorse.setOwnerUUID(ownerUUID);
-                        }
+                                        if (tamed) {
+                                            newZombieHorse.setTamed(true);
+                                            newZombieHorse.setOwner(owner);
+                                        }
 
-                        if (customName != null) {
-                            zombieHorse.setCustomName(customName);
-                            zombieHorse.setCustomNameVisible(customNameVisible);
-                        }
+                                        if (customName != null) {
+                                            newZombieHorse.setCustomName(customName);
+                                            newZombieHorse.setCustomNameVisible(customNameVisible);
+                                        }
 
-                        if (baby) {
-                            zombieHorse.setBaby(true);
-                        }
+                                        if (baby) {
+                                            newZombieHorse.setBaby(true);
+                                        }
 
-                        if (saddled) {
-                            zombieHorse.equipSaddle(new ItemStack(Items.SADDLE),null);
-                        }
+                                        if (saddled) {
+                                            newZombieHorse.setItemSlot (EquipmentSlot.SADDLE, new ItemStack(Items.SADDLE));
+                                        }
 
-                        zombieHorse.spawnAtLocation(horseArmor);
-                        EventHooks.onLivingConvert(horse, zombieHorse);
-                        if (!attacker.isSilent()) {
-                            level.levelEvent(null, 1026, attacker.blockPosition(), 0);
-                        }
-                    }
+                                        newZombieHorse.spawnAtLocation((ServerLevel) level, horseArmor);
+                                        EventHooks.onLivingConvert(horse, newZombieHorse);
+                                        if (!attacker.isSilent()) {
+                                            level.levelEvent(null, 1026, attacker.blockPosition(), 0);
+                                        }
+
+                                    });
                 }
             }
         }

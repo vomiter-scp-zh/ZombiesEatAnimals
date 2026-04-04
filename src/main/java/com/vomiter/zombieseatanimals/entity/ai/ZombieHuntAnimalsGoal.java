@@ -6,8 +6,8 @@ import com.vomiter.zombieseatanimals.data.ZEATags;
 import com.vomiter.zombieseatanimals.entity.ZombieBasicHelpers;
 import com.vomiter.zombieseatanimals.entity.ZombieFoodDropHelper;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.horse.Horse;
-import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.animal.equine.Horse;
+import net.minecraft.world.entity.monster.zombie.Zombie;
 
 public class ZombieHuntAnimalsGoal extends AbstractCappedHuntGoal<Zombie, Animal> {
     private static final long ONE_MC_DAY_TICKS = 24000L;
@@ -18,7 +18,7 @@ public class ZombieHuntAnimalsGoal extends AbstractCappedHuntGoal<Zombie, Animal
 
     @Override
     protected boolean isHuntEnabled() {
-        long currentDayCount = hunter.level().getDayTime() / ONE_MC_DAY_TICKS;
+        long currentDayCount = hunter.level().getOverworldClockTime() / ONE_MC_DAY_TICKS;
         return currentDayCount >= Config.HUNT_START_ON;
     }
 
@@ -36,8 +36,8 @@ public class ZombieHuntAnimalsGoal extends AbstractCappedHuntGoal<Zombie, Animal
     protected boolean isValidHuntTarget(Animal animal) {
         if (animal == null) return false;
         if (animal.isBaby() && !Config.HUNT_BABIES) return false;
-        if (animal.getType().is(ZEATags.NOT_ZOMBIE_TARGET_ANIMAL)) return false;
-        if (animal.getType().is(ZEATags.ZOMBIE_TARGET_ANIMAL)) return true;
+        if (animal.getType().getTags().anyMatch(tag -> tag == ZEATags.NOT_ZOMBIE_TARGET_ANIMAL)) return false;
+        if (animal.getType().getTags().anyMatch(tag -> tag == ZEATags.ZOMBIE_TARGET_ANIMAL)) return true;
         if (Config.HUNT_AND_ZOMBIFY_HORSE && animal instanceof Horse horse) {
             if(horse.isTamed()) return Config.HUNT_AND_ZOMBIFY_TAMED_HORSE;
             return true;
