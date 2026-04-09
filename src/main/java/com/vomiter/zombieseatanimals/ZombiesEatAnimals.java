@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import com.vomiter.zombieseatanimals.data.DataGenerator;
 import com.vomiter.zombieseatanimals.event.HorseDeathEventHandler;
 import com.vomiter.zombieseatanimals.event.ReloadHooks;
+import com.vomiter.zombieseatanimals.event.ZombieDeathEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -34,6 +35,7 @@ public class ZombiesEatAnimals
             final IEventBus bus = MinecraftForge.EVENT_BUS;
             bus.addListener(ReloadHooks::onAddReloadListener);
             bus.addListener(HorseDeathEventHandler::onLivingDeath);
+            bus.addListener(ZombieDeathEvent::onZombieDeath);
         });
     }
 }

@@ -48,8 +48,8 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     annotationProcessor("org.spongepowered:mixin:${mixin_version}:processor")
 
-    runtimeOnly fg.deobf("curse.maven:terrafirmacraft-302973:6835820")
-    runtimeOnly fg.deobf("curse.maven:patchouli-306770:4636277")
+    //runtimeOnly fg.deobf("curse.maven:terrafirmacraft-302973:6835820")
+    //runtimeOnly fg.deobf("curse.maven:patchouli-306770:4636277")
 
 }
 repositories {
@@ -59,8 +59,10 @@ repositories {
 }
 
 dependencies {
-    compileOnly fg.deobf("local:neurolib:0.3.0")
-    runtimeOnly fg.deobf("local:neurolib:0.3.0")
+    compileOnly fg.deobf("local:neurolib:0.3.3")
+    runtimeOnly fg.deobf("local:neurolib:0.3.3")
+    runtimeOnly fg.deobf("curse.maven:insanelib-465109:7882029")
+    runtimeOnly fg.deobf("curse.maven:enhanced-ai-515276:7706349")
 }
 
 //devRuntime.project(":common", true)

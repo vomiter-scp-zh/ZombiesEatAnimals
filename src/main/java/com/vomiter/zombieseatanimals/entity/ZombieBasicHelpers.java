@@ -36,6 +36,7 @@ public class ZombieBasicHelpers {
         return false;
     }
     static UUID ZEA_HP_BOOST_UUID = UUID.fromString("d9b48039-8973-4db2-8f31-0edb3ceb655e");
+    public static UUID getZeaHpBoostUuid() {return ZEA_HP_BOOST_UUID;}
     static UUID ZEA_LEADER_REINFORCEMENT_UUID = UUID.fromString("22279b03-3cbb-4a1c-8f7d-98d06e8b4211");
 
     public static void recoverAndBoostHealth(Zombie zombie, int recovery){
@@ -56,6 +57,7 @@ public class ZombieBasicHelpers {
             }
             maxHealth.addPermanentModifier(new AttributeModifier(ZEA_HP_BOOST_UUID, "ZEA HEALTH BOOST", recovery, AttributeModifier.Operation.ADDITION));
             zombie.heal(recovery);
+            if(Config.ZOMBIES_BECOME_PERSISTENT) zombie.setPersistenceRequired();
 
             var zeaMod2 = maxHealth.getModifier(ZEA_HP_BOOST_UUID);
             if(zeaMod2 == null) return;
