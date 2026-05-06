@@ -23,7 +23,7 @@ public class ZombieBasicHelpers {
     static Identifier ZEA_LEADER_REINFORCEMENT_RL = Identifier.fromNamespaceAndPath("zombieseatanimals", "leader_reinforce_boost");
     static Identifier LEADER_ZOMBIE_BONUS_ID = Identifier.withDefaultNamespace("leader_zombie_bonus");
 
-    public static ResourceLocation getZeaHpBoostRl(){
+    public static Identifier getZeaHpBoostRl(){
         return ZEA_HP_BOOST_RL;
     }
 

@@ -2,14 +2,13 @@ package com.vomiter.zombieseatanimals.entity.ai;
 
 import com.vomiter.neurolib.common.entity.hunt.AbstractCappedHuntGoal;
 import com.vomiter.zombieseatanimals.Config;
-import com.vomiter.zombieseatanimals.ZombiesEatAnimals;
 import com.vomiter.zombieseatanimals.data.ZEATags;
 import com.vomiter.zombieseatanimals.entity.ZombieBasicHelpers;
 import com.vomiter.zombieseatanimals.entity.ZombieFoodDropHelper;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.equine.Horse;
+import net.minecraft.world.entity.animal.equine.ZombieHorse;
 import net.minecraft.world.entity.monster.zombie.Zombie;
 
 public class ZombieHuntAnimalsGoal extends AbstractCappedHuntGoal<Zombie, Animal> {
