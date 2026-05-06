@@ -2,9 +2,12 @@ package com.vomiter.zombieseatanimals.entity.ai;
 
 import com.vomiter.neurolib.common.entity.hunt.AbstractCappedHuntGoal;
 import com.vomiter.zombieseatanimals.Config;
+import com.vomiter.zombieseatanimals.ZombiesEatAnimals;
 import com.vomiter.zombieseatanimals.data.ZEATags;
 import com.vomiter.zombieseatanimals.entity.ZombieBasicHelpers;
 import com.vomiter.zombieseatanimals.entity.ZombieFoodDropHelper;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.equine.Horse;
 import net.minecraft.world.entity.monster.zombie.Zombie;
@@ -34,7 +37,9 @@ public class ZombieHuntAnimalsGoal extends AbstractCappedHuntGoal<Zombie, Animal
 
     @Override
     protected boolean isValidHuntTarget(Animal animal) {
+        MinecraftServer server = mob.level().getServer();
         if (animal == null) return false;
+        if (animal instanceof ZombieHorse && Config.DO_NOT_ATTACK_ZOMBIE_HORSE) return false;
         if (animal.isBaby() && !Config.HUNT_BABIES) return false;
         if (animal.getType().getTags().anyMatch(tag -> tag == ZEATags.NOT_ZOMBIE_TARGET_ANIMAL)) return false;
         if (animal.getType().getTags().anyMatch(tag -> tag == ZEATags.ZOMBIE_TARGET_ANIMAL)) return true;

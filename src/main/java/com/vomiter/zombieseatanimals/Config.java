@@ -18,6 +18,7 @@ public final class Config {
     private static final ModConfigSpec.BooleanValue FIND_NEARBY_ZOMBIE_HORSE_AND_RIDE_VALUE;
     private static final ModConfigSpec.BooleanValue HUNT_BABIES_VALUE;
     private static final ModConfigSpec.IntValue HUNT_START_ON_VALUE;
+    private static final ModConfigSpec.BooleanValue DO_NOT_ATTACK_ZOMBIE_HORSE_VALUE;
 
     private static final ModConfigSpec.IntValue HUNT_COOLDOWN_TICKS_VALUE;
     private static final ModConfigSpec.IntValue HUNT_CAP_FOR_A_DAY_VALUE;
@@ -31,12 +32,22 @@ public final class Config {
     private static final ModConfigSpec.IntValue RECOVERY_PER_NUTRITION_VALUE;
     private static final ModConfigSpec.BooleanValue ROTTEN_FLESH_GIVE_RESISTANCE_VALUE;
 
+    private static final ModConfigSpec.BooleanValue ZOMBIES_BECOME_PERSISTENT_AFTER_EATING_VALUE;
+    private static final ModConfigSpec.BooleanValue ZOMBIES_DROP_MORE_LOOT_VALUE;
+    private static final ModConfigSpec.DoubleValue HP_LOOT_RATIO_VALUE;
+
     // -------- Cached primitives --------
+    public static boolean ZOMBIES_BECOME_PERSISTENT = false;
+    public static boolean ZOMBIES_DROP_MORE_LOOT = false;
+    public static double HP_LOOT_RATIO = 0.5;
+
     public static boolean ALWAYS_HUNTING = false;
     public static boolean BERSERKER_HUNTING = false;
     public static boolean HUNT_AND_ZOMBIFY_HORSE = false;
     public static boolean HUNT_AND_ZOMBIFY_TAMED_HORSE = false;
     public static boolean FIND_NEARBY_ZOMBIE_HORSE_AND_RIDE = false;
+    public static boolean DO_NOT_ATTACK_ZOMBIE_HORSE = true;
+
     public static boolean HUNT_BABIES = false;
     public static int HUNT_START_ON = 0;
 
@@ -64,6 +75,12 @@ public final class Config {
                 )
                 .define("alwaysHunting", false);
 
+        HUNT_BABIES_VALUE = BUILDER
+                .comment(
+                        "If true, zombies may hunt baby animals too."
+                )
+                .define("huntBabies", false);
+
         BERSERKER_HUNTING_VALUE = BUILDER
                 .comment(
                         "If true, zombies enter berserker hunting mode.",
@@ -73,7 +90,7 @@ public final class Config {
 
         BUILDER.pop();
 
-        BUILDER.push("hunting");
+        BUILDER.push("horse");
 
         HUNT_AND_ZOMBIFY_HORSE_VALUE = BUILDER
                 .comment(
@@ -94,11 +111,15 @@ public final class Config {
                 )
                 .define("findNearbyZombieHorseAndRide", false);
 
-        HUNT_BABIES_VALUE = BUILDER
+        DO_NOT_ATTACK_ZOMBIE_HORSE_VALUE = BUILDER
                 .comment(
-                        "If true, zombies may hunt baby animals too."
+                        "If true, zombies do not attack zombie horses."
                 )
-                .define("huntBabies", false);
+                        .define("doNotAttackZombieHorses", true);
+
+        BUILDER.pop();
+
+        BUILDER.push("hunting");
 
         HUNT_START_ON_VALUE = BUILDER
                 .comment(
@@ -177,6 +198,21 @@ public final class Config {
 
         BUILDER.pop();
 
+        BUILDER.push("loot");
+
+        ZOMBIES_BECOME_PERSISTENT_AFTER_EATING_VALUE = BUILDER
+                .comment("If true, zombies that have eaten meat do not despawn naturally.")
+                .define("zombiesBecomePersistentAfterEating", false);
+
+        ZOMBIES_DROP_MORE_LOOT_VALUE = BUILDER
+                .comment("If true, zombies drop more loot based on how many HP boost they gained from eating meat.")
+                .define("zombiesDropMoreLoot", false);
+        HP_LOOT_RATIO_VALUE = BUILDER
+                .comment("If the value is X, then every X * basic max hp gained would convert to loot dropped by a zombie")
+                .defineInRange("hpLootRatio", 1, 0.1, 1024);
+
+        BUILDER.pop();
+
         SPEC = BUILDER.build();
     }
 
@@ -201,6 +237,8 @@ public final class Config {
         HUNT_AND_ZOMBIFY_HORSE = HUNT_AND_ZOMBIFY_HORSE_VALUE.get();
         HUNT_AND_ZOMBIFY_TAMED_HORSE = HUNT_AND_ZOMBIFY_TAMED_HORSE_VALUE.get();
         FIND_NEARBY_ZOMBIE_HORSE_AND_RIDE = FIND_NEARBY_ZOMBIE_HORSE_AND_RIDE_VALUE.get();
+        DO_NOT_ATTACK_ZOMBIE_HORSE = DO_NOT_ATTACK_ZOMBIE_HORSE_VALUE.get();
+
         HUNT_BABIES = HUNT_BABIES_VALUE.get();
         HUNT_START_ON = HUNT_START_ON_VALUE.get();
 
@@ -215,5 +253,9 @@ public final class Config {
         EAT_COOLDOWN_TICKS = EAT_COOLDOWN_TICKS_VALUE.get();
         RECOVERY_PER_NUTRITION = RECOVERY_PER_NUTRITION_VALUE.get();
         ROTTEN_FLESH_GIVE_RESISTANCE = ROTTEN_FLESH_GIVE_RESISTANCE_VALUE.get();
+
+        ZOMBIES_BECOME_PERSISTENT = ZOMBIES_BECOME_PERSISTENT_AFTER_EATING_VALUE.get();
+        ZOMBIES_DROP_MORE_LOOT = ZOMBIES_DROP_MORE_LOOT_VALUE.get();
+        HP_LOOT_RATIO = HP_LOOT_RATIO_VALUE.get();
     }
 }

@@ -23,6 +23,9 @@ public class ZombieBasicHelpers {
     static Identifier ZEA_LEADER_REINFORCEMENT_RL = Identifier.fromNamespaceAndPath("zombieseatanimals", "leader_reinforce_boost");
     static Identifier LEADER_ZOMBIE_BONUS_ID = Identifier.withDefaultNamespace("leader_zombie_bonus");
 
+    public static ResourceLocation getZeaHpBoostRl(){
+        return ZEA_HP_BOOST_RL;
+    }
 
     public static int getMaxHealthBoostCap(Zombie zombie){
         if(zombie.level().getDifficulty().equals(Difficulty.HARD)) return Config.MAX_HEALTH_BOOST_CAP + Config.MAX_HEALTH_BOOST_CAP_HARD_MODE_ADDITION;
@@ -38,7 +41,8 @@ public class ZombieBasicHelpers {
         if(zeaMod.amount() < getMaxHealthBoostCap(zombie)) return true;
         return false;
     }
-    
+
+
     public static void recoverAndBoostHealth(Zombie zombie, int recovery){
         if(isNotMaxed(zombie)){
             if(zombie.getHealth() < zombie.getMaxHealth()){
@@ -57,6 +61,7 @@ public class ZombieBasicHelpers {
             }
             maxHealth.addPermanentModifier(new AttributeModifier(ZEA_HP_BOOST_RL, recovery, AttributeModifier.Operation.ADD_VALUE));
             zombie.heal(recovery);
+            if(Config.ZOMBIES_BECOME_PERSISTENT) zombie.setPersistenceRequired();
 
             var zeaMod2 = maxHealth.getModifier(ZEA_HP_BOOST_RL);
             if(zeaMod2 == null) return;

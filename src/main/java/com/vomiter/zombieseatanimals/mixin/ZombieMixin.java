@@ -30,7 +30,7 @@ public abstract class ZombieMixin extends Monster implements IZombieEatAnimal {
 
     @Inject(method = "addBehaviourGoals", at = @At("HEAD"))
     private void zea$addGoals(CallbackInfo ci){
-        ZombiesEatAnimals.LOGGER.info("[ZEA] Goal Injection");
+        //ZombiesEatAnimals.LOGGER.info("[ZEA] Goal Injection");
         Zombie zombie = (Zombie)(Object)this;
         zea$eatMeatGoal = new ZombieEatMeatAndRegenGoal(zombie, 1.0, 20, 32);
         zea$huntAnimalGoal = new ZombieHuntAnimalsGoal(zombie);
