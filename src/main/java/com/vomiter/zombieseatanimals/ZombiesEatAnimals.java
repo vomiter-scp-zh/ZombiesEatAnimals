@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import com.vomiter.zombieseatanimals.data.DataGenerator;
 import com.vomiter.zombieseatanimals.event.HorseDeathEventHandler;
 import com.vomiter.zombieseatanimals.event.ReloadHooks;
+import com.vomiter.zombieseatanimals.event.ZombieDeathEvent;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;

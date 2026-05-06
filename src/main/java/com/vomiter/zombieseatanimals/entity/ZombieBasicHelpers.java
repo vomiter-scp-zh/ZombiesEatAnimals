@@ -23,6 +23,9 @@ public class ZombieBasicHelpers {
     static ResourceLocation ZEA_LEADER_REINFORCEMENT_RL = ResourceLocation.fromNamespaceAndPath("zombieseatanimals", "leader_reinforce_boost");
     static ResourceLocation LEADER_ZOMBIE_BONUS_ID = ResourceLocation.withDefaultNamespace("leader_zombie_bonus");
 
+    public static ResourceLocation getZeaHpBoostRl(){
+        return ZEA_HP_BOOST_RL;
+    }
 
     public static int getMaxHealthBoostCap(Zombie zombie){
         if(zombie.level().getDifficulty().equals(Difficulty.HARD)) return Config.MAX_HEALTH_BOOST_CAP + Config.MAX_HEALTH_BOOST_CAP_HARD_MODE_ADDITION;
