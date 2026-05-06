@@ -39,6 +39,7 @@ public class ZombieBasicHelpers {
         return false;
     }
 
+
     public static void recoverAndBoostHealth(Zombie zombie, int recovery){
         if(isNotMaxed(zombie)){
             if(zombie.getHealth() < zombie.getMaxHealth()){
