@@ -22,7 +22,7 @@ public class ZombieDeathEvent {
         if(dmg == null) dmg = zombie.damageSources().generic();
         for (int i = 0; i < boost.amount() / (base * Config.HP_LOOT_RATIO); i++) {
             if (zombie instanceof LivingEntityAccessor accessor && zombie.level() instanceof ServerLevel serverLevel){
-                accessor.dropAllDeathLoot(serverLevel, dmg);
+                accessor.zea$dropAllDeathLoot(serverLevel, dmg);
             }
         }
     }
