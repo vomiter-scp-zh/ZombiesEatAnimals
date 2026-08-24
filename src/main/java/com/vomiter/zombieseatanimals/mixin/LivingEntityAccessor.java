@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(LivingEntity.class)
 public interface LivingEntityAccessor {
     @Invoker("dropAllDeathLoot")
-    void dropAllDeathLoot(
+    void zea$dropAllDeathLoot(
             DamageSource p_21192_
     );
 }

@@ -20,7 +20,7 @@ public class ZombieDeathEvent {
         if(dmg == null) dmg = zombie.damageSources().generic();
         for (int i = 0; i < boost.getAmount() / (base * Config.HP_LOOT_RATIO); i++) {
             if (zombie instanceof LivingEntityAccessor accessor){
-                accessor.dropAllDeathLoot(dmg);
+                accessor.zea$dropAllDeathLoot(dmg);
             }
         }
     }
