@@ -2,6 +2,7 @@ package com.vomiter.zombieseatanimals.event;
 
 import com.vomiter.zombieseatanimals.Config;
 import com.vomiter.zombieseatanimals.entity.ZombieBasicHelpers;
+import com.vomiter.zombieseatanimals.mixin.LivingEntityAccessor;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -18,12 +19,9 @@ public class ZombieDeathEvent {
         var dmg = event.getSource();
         if(dmg == null) dmg = zombie.damageSources().generic();
         for (int i = 0; i < boost.getAmount() / (base * Config.HP_LOOT_RATIO); i++) {
-            var zombie0 = (Zombie)zombie.getType().create(zombie.level());
-            if(zombie0 == null) continue;
-            zombie0.setNoAi(true);
-            zombie0.setInvisible(true);
-            zombie0.setPos(zombie.getEyePosition());
-            zombie0.die(dmg);
+            if (zombie instanceof LivingEntityAccessor accessor){
+                accessor.dropAllDeathLoot(dmg);
+            }
         }
     }
 }

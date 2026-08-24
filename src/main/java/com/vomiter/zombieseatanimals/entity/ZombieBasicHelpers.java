@@ -84,7 +84,9 @@ public class ZombieBasicHelpers {
                             zombie.getRandom().nextDouble() * 0.25D + 0.5D,
                             AttributeModifier.Operation.ADDITION)
             );
-            zombiesToUpgrade.add(zombie);
+            if (zombie instanceof IZombieEatAnimal zombieEatAnimal){
+                zombieEatAnimal.zea$setCanBreakDoor();
+            }
         }
     }
 }

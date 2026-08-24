@@ -53,14 +53,16 @@ dependencies {
 
 }
 repositories {
-    flatDir {
-        dir project(":neurolib").layout.buildDirectory.dir("libs").get().asFile
-    }
+//    flatDir {
+//        dir project(":neurolib").layout.buildDirectory.dir("libs").get().asFile
+//    }
 }
 
 dependencies {
-    compileOnly fg.deobf("local:neurolib:0.3.3")
-    runtimeOnly fg.deobf("local:neurolib:0.3.3")
+    //compileOnly fg.deobf("local:neurolib:0.3.3")
+    //runtimeOnly fg.deobf("local:neurolib:0.3.3")
+    implementation fg.deobf("curse.maven:neurolib-1484243:7897734")
+
     runtimeOnly fg.deobf("curse.maven:insanelib-465109:7882029")
     runtimeOnly fg.deobf("curse.maven:enhanced-ai-515276:7706349")
 }
