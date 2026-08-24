@@ -4,4 +4,5 @@ import com.vomiter.zombieseatanimals.entity.ai.ZombieHuntAnimalsGoal;
 
 public interface IZombieEatAnimal {
     ZombieHuntAnimalsGoal zea$getHuntAnimalGoal();
+    void zea$setCanBreakDoor();
 }

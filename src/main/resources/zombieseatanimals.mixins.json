@@ -4,9 +4,10 @@
   "package": "com.vomiter.zombieseatanimals.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "ZombieMixin",
+    "LivingEntityAccessor",
     "LivingEntityMixin",
-    "Zombie_MountedHeadClampMixin"
+    "Zombie_MountedHeadClampMixin",
+    "ZombieMixin"
   ],
   "client": [
   ],

@@ -1,9 +1,7 @@
 package com.vomiter.zombieseatanimals.mixin;
 
 import com.vomiter.zombieseatanimals.Config;
-import com.vomiter.zombieseatanimals.ZombiesEatAnimals;
 import com.vomiter.zombieseatanimals.entity.IZombieEatAnimal;
-import com.vomiter.zombieseatanimals.entity.ZombieBasicHelpers;
 import com.vomiter.zombieseatanimals.entity.ai.ZombieEatMeatAndRegenGoal;
 import com.vomiter.zombieseatanimals.entity.ai.ZombieHuntAnimalsGoal;
 import com.vomiter.zombieseatanimals.entity.ai.ZombieMountNearbyZombieHorseGoal;
@@ -12,7 +10,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -39,12 +36,10 @@ public abstract class ZombieMixin extends Monster implements IZombieEatAnimal {
         if(Config.FIND_NEARBY_ZOMBIE_HORSE_AND_RIDE) goalSelector.addGoal(4, new ZombieMountNearbyZombieHorseGoal(zombie, 1, 32, 3));
     }
 
-    @Inject(method = "tick", at = @At("RETURN"))
-    private void zea$tick(CallbackInfo ci){
+    @Override
+    public void zea$setCanBreakDoor() {
         Zombie zombie = (Zombie)(Object)this;
-        if(ZombieBasicHelpers.zombiesToUpgrade.remove(zombie)){
-            zombie.setCanBreakDoors(true);
-        }
+        zombie.setCanBreakDoors(true);
     }
 
     @Unique

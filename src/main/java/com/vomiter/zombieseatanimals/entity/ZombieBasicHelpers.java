@@ -17,7 +17,6 @@ import java.util.List;
 
 
 public class ZombieBasicHelpers {
-    public static List<Zombie> zombiesToUpgrade = new ArrayList<>();
     public static TagKey<Item> ZOMBIE_FOOD = TagKey.create(BuiltInRegistries.ITEM.key(), Helpers.id("zombie_food"));
     static Identifier ZEA_HP_BOOST_RL = Identifier.fromNamespaceAndPath("zombieseatanimals", "hp_boost");
     static Identifier ZEA_LEADER_REINFORCEMENT_RL = Identifier.fromNamespaceAndPath("zombieseatanimals", "leader_reinforce_boost");
@@ -87,7 +86,9 @@ public class ZombieBasicHelpers {
                             zombie.getRandom().nextDouble() * 0.25D + 0.5D,
                             AttributeModifier.Operation.ADD_VALUE)
             );
-            zombiesToUpgrade.add(zombie);
+            if (zombie instanceof IZombieEatAnimal zombieEatAnimal){
+                zombieEatAnimal.zea$setCanBreakDoor();
+            }
         }
     }
 }
