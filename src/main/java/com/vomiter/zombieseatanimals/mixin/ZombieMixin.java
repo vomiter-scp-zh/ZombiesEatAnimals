@@ -1,9 +1,7 @@
 package com.vomiter.zombieseatanimals.mixin;
 
 import com.vomiter.zombieseatanimals.Config;
-import com.vomiter.zombieseatanimals.ZombiesEatAnimals;
 import com.vomiter.zombieseatanimals.entity.IZombieEatAnimal;
-import com.vomiter.zombieseatanimals.entity.ZombieBasicHelpers;
 import com.vomiter.zombieseatanimals.entity.ai.ZombieEatMeatAndRegenGoal;
 import com.vomiter.zombieseatanimals.entity.ai.ZombieHuntAnimalsGoal;
 import com.vomiter.zombieseatanimals.entity.ai.ZombieMountNearbyZombieHorseGoal;
