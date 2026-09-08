@@ -6,6 +6,7 @@ import com.vomiter.zombieseatanimals.entity.ZombieBasicHelpers;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.item.ItemStack;
@@ -48,12 +49,40 @@ public class ZombieEatMeatAndRegenGoal extends MobEatDroppedItemGoal<Zombie> {
 
     @Override
     protected boolean canStartAction() {
-        return ZombieBasicHelpers.isNotMaxed(mob);
+        LivingEntity target = mob.getTarget();
+        LivingEntity attacker = mob.getLastHurtByMob();
+
+        boolean recentlyHurt = attacker != null
+                && attacker.isAlive()
+                && mob.tickCount - mob.getLastHurtByMobTimestamp() < Config.FOOD_COMBAT_LOCK_TICKS;
+
+        boolean closeTarget = target != null
+                && target.isAlive()
+                && mob.distanceToSqr(target)
+                <= Config.FOOD_COMBAT_LOCK_DISTANCE * Config.FOOD_COMBAT_LOCK_DISTANCE;
+
+        return ZombieBasicHelpers.isNotMaxed(mob)
+                && !recentlyHurt
+                && !closeTarget;
     }
 
     @Override
     protected boolean canContinueAction() {
-        return ZombieBasicHelpers.isNotMaxed(mob);
+        LivingEntity target = mob.getTarget();
+        LivingEntity attacker = mob.getLastHurtByMob();
+
+        boolean recentlyHurt = attacker != null
+                && attacker.isAlive()
+                && mob.tickCount - mob.getLastHurtByMobTimestamp() < Config.FOOD_COMBAT_LOCK_TICKS;
+
+        boolean closeTarget = target != null
+                && target.isAlive()
+                && mob.distanceToSqr(target)
+                <= Config.FOOD_COMBAT_LOCK_DISTANCE * Config.FOOD_COMBAT_LOCK_DISTANCE;
+
+        return ZombieBasicHelpers.isNotMaxed(mob)
+                && !recentlyHurt
+                && !closeTarget;
     }
 
     @Override

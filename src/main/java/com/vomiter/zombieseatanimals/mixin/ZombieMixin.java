@@ -35,7 +35,7 @@ public abstract class ZombieMixin extends Monster implements IZombieEatAnimal {
         zea$eatMeatGoal = new ZombieEatMeatAndRegenGoal(zombie, 1.0, 20, 32);
         zea$huntAnimalGoal = new ZombieHuntAnimalsGoal(zombie);
         targetSelector.addGoal(3, zea$huntAnimalGoal);
-        goalSelector.addGoal(4, zea$eatMeatGoal);
+        goalSelector.addGoal(1, zea$eatMeatGoal);
         if(Config.FIND_NEARBY_ZOMBIE_HORSE_AND_RIDE) goalSelector.addGoal(4, new ZombieMountNearbyZombieHorseGoal(zombie, 1, 32, 3));
     }
 

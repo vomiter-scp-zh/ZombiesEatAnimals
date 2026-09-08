@@ -63,8 +63,8 @@ dependencies {
     //runtimeOnly fg.deobf("local:neurolib:0.3.3")
     implementation fg.deobf("curse.maven:neurolib-1484243:7897734")
 
-    runtimeOnly fg.deobf("curse.maven:insanelib-465109:7882029")
-    runtimeOnly fg.deobf("curse.maven:enhanced-ai-515276:7706349")
+    //runtimeOnly fg.deobf("curse.maven:insanelib-465109:7882029")
+    //runtimeOnly fg.deobf("curse.maven:enhanced-ai-515276:7706349")
 }
 
 //devRuntime.project(":common", true)

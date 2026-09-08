@@ -37,6 +37,10 @@ public final class Config {
     private static final ForgeConfigSpec.BooleanValue ZOMBIES_DROP_MORE_LOOT_VALUE;
     private static final ForgeConfigSpec.DoubleValue HP_LOOT_RATIO_VALUE;
 
+    private static final ForgeConfigSpec.IntValue FOOD_COMBAT_LOCK_TICKS_VALUE;
+    private static final ForgeConfigSpec.DoubleValue FOOD_COMBAT_LOCK_DISTANCE_VALUE;
+
+
     // -------- Cached primitives --------
     public static boolean ZOMBIES_BECOME_PERSISTENT = false;
     public static boolean ZOMBIES_DROP_MORE_LOOT = false;
@@ -63,6 +67,10 @@ public final class Config {
     public static int EAT_COOLDOWN_TICKS = 40;
     public static int RECOVERY_PER_NUTRITION = 1;
     public static boolean ROTTEN_FLESH_GIVE_RESISTANCE = true;
+    public static int FOOD_COMBAT_LOCK_TICKS = 100;
+    public static double FOOD_COMBAT_LOCK_DISTANCE = 8;
+
+
 
     public static final ForgeConfigSpec SPEC;
 
@@ -197,6 +205,14 @@ public final class Config {
                 .comment("If true, eating rotten flesh grants a short Resistance effect.")
                 .define("rottenFleshGiveResistance", true);
 
+        FOOD_COMBAT_LOCK_TICKS_VALUE = BUILDER
+                .comment("Zombies that have been damaged within this many ticks will not be distracted by dropped food.")
+                .defineInRange("foodCombatLockTicks", 100, 0, Integer.MAX_VALUE);
+
+        FOOD_COMBAT_LOCK_DISTANCE_VALUE = BUILDER
+                .comment("Zombies will not abandon an attack target within this distance to seek dropped food.")
+                .defineInRange("foodCombatLockDistance", 8.0, 0, 100);
+
         BUILDER.pop();
 
         BUILDER.push("loot");
@@ -258,5 +274,8 @@ public final class Config {
         ZOMBIES_BECOME_PERSISTENT = ZOMBIES_BECOME_PERSISTENT_AFTER_EATING_VALUE.get();
         ZOMBIES_DROP_MORE_LOOT = ZOMBIES_DROP_MORE_LOOT_VALUE.get();
         HP_LOOT_RATIO = HP_LOOT_RATIO_VALUE.get();
+
+        FOOD_COMBAT_LOCK_DISTANCE = FOOD_COMBAT_LOCK_DISTANCE_VALUE.get();
+        FOOD_COMBAT_LOCK_TICKS = FOOD_COMBAT_LOCK_TICKS_VALUE.get();
     }
 }
