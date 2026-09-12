@@ -2,6 +2,7 @@ package com.vomiter.zombieseatanimals.mixin;
 
 import com.vomiter.zombieseatanimals.Config;
 import com.vomiter.zombieseatanimals.entity.IZombieEatAnimal;
+import com.vomiter.zombieseatanimals.entity.ZombieBasicHelpers;
 import com.vomiter.zombieseatanimals.entity.ai.ZombieEatMeatAndRegenGoal;
 import com.vomiter.zombieseatanimals.entity.ai.ZombieHuntAnimalsGoal;
 import com.vomiter.zombieseatanimals.entity.ai.ZombieMountNearbyZombieHorseGoal;
@@ -37,6 +38,12 @@ public abstract class ZombieMixin extends Monster implements IZombieEatAnimal {
         targetSelector.addGoal(3, zea$huntAnimalGoal);
         goalSelector.addGoal(1, zea$eatMeatGoal);
         if(Config.FIND_NEARBY_ZOMBIE_HORSE_AND_RIDE) goalSelector.addGoal(4, new ZombieMountNearbyZombieHorseGoal(zombie, 1, 32, 3));
+    }
+
+    @Inject(method = "tick", at = @At("TAIL"))
+    private void zea$tickEnd(CallbackInfo ci){
+        Zombie zombie = (Zombie)(Object)this;
+        ZombieBasicHelpers.upgradeToLeader(zombie);
     }
 
     @Override
