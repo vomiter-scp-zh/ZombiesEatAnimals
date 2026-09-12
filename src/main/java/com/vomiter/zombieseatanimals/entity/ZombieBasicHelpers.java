@@ -62,12 +62,19 @@ public class ZombieBasicHelpers {
             var zeaMod2 = maxHealth.getModifier(ZEA_HP_BOOST_UUID);
             if(zeaMod2 == null) return;
             if(zeaMod2.getAmount() >= Config.MAX_HEALTH_BOOST_CAP){
-                upgradeToLeader(zombie);
+                setZombieToUpgrade(zombie);
             }
         }
     }
 
-    private static void upgradeToLeader(Zombie zombie){
+    private static void setZombieToUpgrade(Zombie zombie){
+        zombie.getPersistentData().putBoolean("should_upgrade", true);
+    }
+
+    public static void upgradeToLeader(Zombie zombie){
+        if (!zombie.getPersistentData().getBoolean("should_upgrade")) return;
+        zombie.getPersistentData().remove("should_upgrade");
+
         var src = zombie.getAttribute(Attributes.SPAWN_REINFORCEMENTS_CHANCE);
         if(src == null) return;
         boolean isZEALeader = src.getModifier(ZEA_LEADER_REINFORCEMENT_UUID) != null;

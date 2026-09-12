@@ -39,6 +39,12 @@ public abstract class ZombieMixin extends Monster implements IZombieEatAnimal {
         if(Config.FIND_NEARBY_ZOMBIE_HORSE_AND_RIDE) goalSelector.addGoal(4, new ZombieMountNearbyZombieHorseGoal(zombie, 1, 32, 3));
     }
 
+    @Inject(method = "tick", at = @At("TAIL"))
+    private void zea$tickEnd(CallbackInfo ci){
+        Zombie zombie = (Zombie)(Object)this;
+        ZombieBasicHelpers.upgradeToLeader(zombie);
+    }
+
     @Override
     public void zea$setCanBreakDoor() {
         Zombie zombie = (Zombie)(Object)this;
